@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>山的四季</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Microsoft JhengHei', sans-serif;
+    }
+
+    /* 初始 banner 藍色塊 */
+    .banner {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      padding: 20px;
+      background-color: deepskyblue;
+    }
+
+    .banner-text h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+    }
+
+    .banner-text p {
+      font-size: 1.5em;
+      max-width: 800px;
+      line-height: 1.8;
+    }
+
+    /* sticky-top 讓區塊固定 */
+    .sticky-top {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    /* outer 底圖 mountain1 */
+    #outer {
+      background-image: url("mountain1.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    /* statusbar 上層圖 mountain2,初始寬度0 */
+    #statusbar {
+      width: 0;
+      height: 100vh;
+      background-image: url("mountain2.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      opacity: 1;
+    }
+
+    .vh-100 {
+      height: 100vh;
+    }
+
+    .bg-dark {
+      background-color: #343a40;
+    }
+  </style>
+</head>
+<body>
+  <!-- 初始藍色 banner -->
+  <div class="banner">
+    <div class="banner-text">
+      <h1>山的四季</h1>
+      <p>
+        春天,山花綻放,綠意盎然;<br>
+        夏天,山林繁茂,溪流清涼;<br>
+        秋天,楓葉火紅,色彩斑斕;<br>
+        冬天,白雪覆蓋,靜謐安詳。
+      </p>
+    </div>
+  </div>
+
+  <!-- 滾動區塊 -->
+  <div id="scroll-container" style="height:300vh">
+    <div id="outer" class="sticky-top">
+      <div id="statusbar"></div>
+    </div>
+  </div>
+
+  <!-- 底部灰色區塊 + 文字 -->
+  <div style="height:100vh; background:grey; display:flex; justify-content:center; align-items:center; text-align:center; color:white; padding:20px; font-size:1.2em; line-height:1.6;">
+    有些人爬山,只為了站在山頂欣賞湖光山色,感受大自然的寧靜與壯麗;有些人則背著帳篷、準備野炊,只為在山林間露營,與親友共享夜晚的星空與篝火的溫暖。無論目的為何,每個登山者都在山中找到屬於自己的快樂與感動。
+  </div>
+
+  <!-- Scrollable Image 容器 -->
+  <div id="5dc79cbf-d4ce-468b-9451-a414b4122e33"></div>
+
+  <!-- 深灰色區塊 + 製作說明 -->
+  <div class="vh-100 bg-dark" style="display:flex; justify-content:center; align-items:center; text-align:center; color:white; padding:20px;">
+    <p style="font-size:1.1em;">本作業使用 ChatGPT 生成圖片,並使用 Claude 協作完成程式碼。</p>
+  </div>
+
+  <!-- Scrollable Image 資料設定 -->
+  <script>
+    (function() {
+      var namespace = '__twreporterEmbeddedData';
+      var packageName = 'scrollable-image';
+      if (typeof window != 'undefined') {
+        if (!window[namespace]) {
+          window[namespace] = {};
+        }
+        if (window[namespace] && !window[namespace][packageName]) {
+          window[namespace][packageName] = [];
+        }
+      }
+      if (Array.isArray(window[namespace][packageName])) {
+        // 生成重複的圖片陣列
+        var images = [];
+        var repeatCount = 5; // 重複次數
+        var baseImages = [
+          "lake.jpg",
+          "camp.jpg"
+        ];
+        for (var i = 0; i < repeatCount; i++) {
+          images = images.concat(baseImages);
+        }
+        var data = {
+          "uuid": "5dc79cbf-d4ce-468b-9451-a414b4122e33",
+          "lazyload": true,
+          "data": images,
+          "skipLoadLocationRegExp": "editor"
+        }
+        window[namespace][packageName].push(data);
+      }
+    })();
+  </script>
+
+  <!-- Scrollable Image 外部腳本 -->
+  <script type="text/javascript" src="https://unpkg.com/@twreporter/scrollable-image@1.3.1/dist/main-1f135a15f5704958e631.bundle.js"></script>
+
+  <!-- 滾動效果 JavaScript -->
+  <script>
+    $(document).ready(function () {
+      var $scrollContainer = $('#scroll-container');
+      var $banner = $('.banner');
+      var win_w = $(window).width();
+      
+      $(window).scroll(function () {
+        var scrolled = $(window).scrollTop();
+        var bannerHeight = $banner.outerHeight();
+        var containerTop = $scrollContainer.offset().top;
+        var containerHeight = $scrollContainer.outerHeight();
+        
+        // 計算在滾動容器內的相對滾動位置
+        var relativeScroll = scrolled - bannerHeight;
+        
+        // 只在滾動容器範圍內計算寬度
+        if (relativeScroll >= 0 && relativeScroll <= containerHeight - $(window).height()) {
+          var scrollRange = containerHeight - $(window).height();
+          var progress = relativeScroll / scrollRange;
+          var new_width = win_w * progress;
+          
+          $("#statusbar").css({
+            width: new_width
+          });
+        } else if (relativeScroll > containerHeight - $(window).height()) {
+          // 滾動超過範圍後保持100%寬度
+          $("#statusbar").css({
+            width: win_w
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
